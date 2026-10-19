@@ -36,6 +36,7 @@ export {
 export { StateStore, sessionKey } from "./state.ts";
 export { formatTargets, gitStatus, readText, standardsText, targetDoc } from "./context.ts";
 export { registerBioarcExtension } from "./adapter.ts";
+export type { OmpPluginApi } from "./adapter.ts";
 
 export function createBioarcExtension(): (pi: OmpPluginApi) => void {
   return (pi) => registerBioarcExtension(pi);
