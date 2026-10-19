@@ -160,11 +160,12 @@ function handleToolCall(event: ToolCallEvent, ctx: SessionContextLike, states: S
     return undefined;
   }
   const rawPaths = event.toolName === "write" ? [input.path] : parseEditPaths(input.input);
-  if (!state.target) return { block: true, reason: "Bioarc requires a selected target before file changes. Use /bioarc select <app-or-package>." };
+  const activeTarget = state.target;
+  if (!activeTarget) return { block: true, reason: "Bioarc requires a selected target before file changes. Use /bioarc select <app-or-package>." };
   const paths = rawPaths.map((value) => normalizeToolPath(state.root!, ctx.cwd, value)).filter((value): value is string => value !== null);
-  const denied = paths.find((candidate) => !isWriteAllowed(state.root!, state.target, candidate, state.expanded));
+  const denied = paths.find((candidate) => !isWriteAllowed(state.root!, activeTarget, candidate, state.expanded));
   if (denied) {
-    return { block: true, reason: `Bioarc blocked ${relativePath(state.root!, denied)}. Active target is ${state.target.name}; use /bioarc expand <target> for an intentional cross-target change.` };
+    return { block: true, reason: `Bioarc blocked ${relativePath(state.root!, denied)}. Active target is ${activeTarget.name}; use /bioarc expand <target> for an intentional cross-target change.` };
   }
   return undefined;
 }
