@@ -1,0 +1,11 @@
+kind: package
+name: "@bioarc/i18n-react"
+folder: packages/i18n-react
+source: generated-from-workspace-manifest
+summary: "Workspace package @bioarc/i18n-react; no manifest description is declared."
+public: true
+writeScope: target-only
+validation:
+  - build
+  - check-types
+  - test:run

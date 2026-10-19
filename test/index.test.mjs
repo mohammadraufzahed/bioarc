@@ -1,5 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import fs from "node:fs";
+import path from "node:path";
 import {
   dependencyClosure,
   discoverTargets,
@@ -36,4 +38,13 @@ test("parses edit paths and protects unrelated targets", () => {
   const table = resolveTarget(targets, "@bioarc/table");
   assert.equal(isWriteAllowed(root, table, `${root}/packages/table/src/index.ts`), true);
   assert.equal(isWriteAllowed(root, table, `${root}/apps/repo-client/src/index.ts`), false);
+});
+
+test("ships default metadata for every discovered target", () => {
+  const targets = discoverTargets(root);
+  const defaultsRoot = path.resolve(path.dirname(new URL(import.meta.url).pathname), "..", "defaults");
+  for (const target of targets) {
+    const file = path.join(defaultsRoot, `${target.kind}s`, `${path.basename(target.folder)}.yaml`);
+    assert.equal(fs.existsSync(file), true, `missing default metadata: ${file}`);
+  }
 });

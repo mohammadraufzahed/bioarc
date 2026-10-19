@@ -1,0 +1,11 @@
+kind: package
+name: "@bioarc/ui"
+folder: packages/ui
+source: generated-from-workspace-manifest
+summary: "Workspace package @bioarc/ui; no manifest description is declared."
+public: true
+writeScope: target-only
+validation:
+  - build
+  - check-types
+  - test:run

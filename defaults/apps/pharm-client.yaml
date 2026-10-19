@@ -1,0 +1,9 @@
+kind: app
+name: pharm-client
+folder: apps/pharm-client
+source: generated-from-workspace-manifest
+summary: "Workspace app pharm-client; no manifest description is declared."
+private: true
+writeScope: target-only
+validation:
+  - app-validate

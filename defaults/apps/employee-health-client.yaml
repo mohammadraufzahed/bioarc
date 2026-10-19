@@ -1,0 +1,9 @@
+kind: app
+name: employee-health-client
+folder: apps/employee-health-client
+source: generated-from-workspace-manifest
+summary: "Workspace app employee-health-client; no manifest description is declared."
+private: true
+writeScope: target-only
+validation:
+  - app-validate

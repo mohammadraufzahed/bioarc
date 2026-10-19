@@ -1,0 +1,11 @@
+kind: package
+name: "@bioarc/tailwind-config"
+folder: packages/tailwind-config
+source: generated-from-workspace-manifest
+summary: "Workspace package @bioarc/tailwind-config; no manifest description is declared."
+public: true
+writeScope: target-only
+validation:
+  - build
+  - check-types
+  - test:run

@@ -1,0 +1,9 @@
+kind: app
+name: lab-client
+folder: apps/lab-client
+source: generated-from-workspace-manifest
+summary: "Workspace app lab-client; no manifest description is declared."
+private: true
+writeScope: target-only
+validation:
+  - app-validate

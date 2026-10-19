@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
+import { fileURLToPath } from "node:url";
 
 const TARGET_ROOTS = ["apps", "packages"];
 const ROOT_SAFE_FILES = new Set([
@@ -10,6 +11,8 @@ const ROOT_SAFE_FILES = new Set([
   "turbo.json",
 ]);
 const MUTATING_BASH = /(?:^|[;&|]\s*)(?:rm|mv|cp|mkdir|touch|install|chmod|chown|ln|sed\s+-i|perl\s+-i|git\s+(?:checkout|reset|clean|restore)|(?:pnpm|npm|yarn|bun)\s+install)\b/i;
+const PLUGIN_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const DEFAULTS_ROOT = path.join(PLUGIN_ROOT, "defaults");
 
 function readJson(file) {
   try {
@@ -195,12 +198,21 @@ function validationPlan(target) {
   return [`pnpm turbo run ${tasks.join(" ")} --filter=${target.name}...`];
 }
 
+function defaultMetadataPath(target) {
+  return path.join(
+    DEFAULTS_ROOT,
+    `${target.kind}s`,
+    `${path.basename(target.folder)}.yaml`,
+  );
+}
+
 function targetDoc(state) {
   const { root, target, targets, expanded } = state;
   const manifest = target.manifest;
   const closure = [...dependencyClosure(target, targets)];
   const consumers = reverseConsumers(target, targets).map((item) => item.name);
   const extra = readText(path.join(target.path, "bioarc.yaml"), 6000);
+  const defaults = readText(defaultMetadataPath(target), 6000);
   const readme = readText(path.join(target.path, "README.md"), 6000);
   const rootRules = [
     readText(path.join(root, "AGENTS.md"), 8000),
@@ -222,6 +234,7 @@ function targetDoc(state) {
     "",
     "## Validation",
     ...validationPlan(target).map((command) => `- ${command}`),
+    defaults ? `\n## Bioarc default metadata\n${defaults}` : "",
     extra ? `\n## Bioarc metadata\n${extra}` : "",
     readme ? `\n## Target README\n${readme}` : "",
     rootRules ? `\n## Repository rules\n${rootRules}` : "",

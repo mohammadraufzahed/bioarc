@@ -1,0 +1,11 @@
+kind: package
+name: "@bioarc/typescript-config"
+folder: packages/typescript-config
+source: generated-from-workspace-manifest
+summary: "Workspace package @bioarc/typescript-config; no manifest description is declared."
+public: true
+writeScope: target-only
+validation:
+  - build
+  - check-types
+  - test:run

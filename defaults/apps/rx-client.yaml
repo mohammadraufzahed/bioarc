@@ -1,0 +1,9 @@
+kind: app
+name: rx-client
+folder: apps/rx-client
+source: generated-from-workspace-manifest
+summary: "Workspace app rx-client; no manifest description is declared."
+private: true
+writeScope: target-only
+validation:
+  - app-validate
