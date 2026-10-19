@@ -22,27 +22,41 @@ Think of it as a focused workspace mode for your AI. Less “what if I rewrite t
 
 ## Install
 
-You need [OMP](https://github.com/oh-my-pi/oh-my-pi) and a Turborepo workspace.
+You need [OMP](https://github.com/oh-my-pi/oh-my-pi), Node.js, and the BioArc modules monorepo at:
+
+`/home/heaton/Workspace/BioArc/modules-monorepo`
+
+Bioarc intentionally activates **only** when OMP is started from that canonical workspace. It does not register commands, completion, prompts, or write guards in other directories.
 
 ```sh
 git clone https://github.com/mohammadraufzahed/bioarc.git
 cd bioarc
+npm install
+npm run build
 omp plugin link .
 ```
 
-Restart OMP. To load Bioarc for only one session:
+The package manifest points OMP at the native TypeScript entrypoint in `src/index.ts`; OMP loads this file directly. `npm run build` also emits JavaScript and declarations in `dist/` for Node tooling and distribution. Restart OMP after linking. To load Bioarc for one session without linking:
 
 ```sh
-omp --extension ./src/index.mjs
+omp --extension ./src/index.ts
 ```
+
 
 ## Start a session
 
-Run OMP from your Turborepo root:
+Run OMP from the canonical workspace (the plugin is inactive elsewhere):
 
 ```sh
+cd /home/heaton/Workspace/BioArc/modules-monorepo
 omp
 ```
+
+The command's completion is context-aware:
+
+- `/bioarc ` suggests and ranks `targets`, `select`, `status`, `docs`, `impact`, `standards`, `verify`, `expand`, and `clear`;
+- `/bioarc select ` and `/bioarc expand ` suggest discovered app and package names, folder paths, and package basenames;
+- completion results are ranked by exact matches, prefixes, and then substring matches.
 
 Then choose your target:
 
@@ -141,7 +155,11 @@ Bioarc is an in-process OMP extension, not a magical OS sandbox. Its `write` and
 ```sh
 git clone https://github.com/mohammadraufzahed/bioarc.git
 cd bioarc
-node --test
+npm install
+npm run build
+npm test
 ```
+
+`npm test` builds the TypeScript sources before running the Node test suite. The tests also import the native `src/index.ts` API used by OMP, covering both workspace helpers and completion behavior.
 
 Ideas, fixes, and better workspace standards are welcome. Make the AI less chaotic for the next person too.

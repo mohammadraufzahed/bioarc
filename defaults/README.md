@@ -1,6 +1,8 @@
 # Bioarc default metadata
 
-These YAML files are shipped inside the plugin and provide a baseline for every workspace target discovered in the Bioarc modules monorepo.
+These YAML files are shipped inside the plugin and provide a baseline for every workspace target discovered in the BioArc modules monorepo.
+
+The plugin activates only from the canonical workspace root `/home/heaton/Workspace/BioArc/modules-monorepo`. Defaults are never loaded for another Turborepo checkout.
 
 They are intentionally conservative:
 

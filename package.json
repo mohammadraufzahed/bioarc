@@ -5,9 +5,24 @@
   "type": "module",
   "description": "Repository-aware OMP extension for Bioarc Turborepo workspaces",
   "omp": {
-    "extensions": ["./src/index.mjs"]
+    "extensions": [
+      "./src/index.ts"
+    ]
   },
+  "files": [
+    "src",
+    "dist",
+    "defaults",
+    "README.md",
+    "POLICY.md"
+  ],
   "scripts": {
-    "test": "node --test"
+    "build": "tsc --project tsconfig.json",
+    "typecheck": "tsc --project tsconfig.json --noEmit",
+    "test": "npm run build && node --test"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "typescript": "^5.9.2"
   }
 }
