@@ -1,0 +1,16 @@
+# Copy this file to a target as bioarc.yaml to add human-maintained guidance.
+kind: package
+owner: frontend-platform
+stability: stable
+public: true
+
+capabilities:
+  - describe-the-target
+
+forbiddenDependencies:
+  - application-code
+
+requiredChecks:
+  - build
+  - check-types
+  - test:run

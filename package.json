@@ -1,0 +1,13 @@
+{
+  "name": "@bioarc/omp-plugin",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Repository-aware OMP extension for Bioarc Turborepo workspaces",
+  "omp": {
+    "extensions": ["./src/index.mjs"]
+  },
+  "scripts": {
+    "test": "node --test"
+  }
+}
