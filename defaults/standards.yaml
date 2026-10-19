@@ -1,0 +1,34 @@
+version: 1
+
+# Applies to app and package development.
+dependencyPolicy:
+  priority:
+    - existing-code-and-platform-apis
+    - existing-bioarc-packages
+    - existing-workspace-dependencies
+    - third-party-dependency
+  rules:
+    - prefer-zero-new-dependencies
+    - search-the-bioarc-package-catalog-before-adding-a-library
+    - reuse-an-existing-dependency-before-adding-an-alternative
+    - justify-every-new-third-party-runtime-dependency
+    - use-workspace-links-for-local-bioarc-packages
+    - preserve-pnpm-overrides-and-singleton-react-router-versions
+
+appStandards:
+  - keep-app-specific-behavior-in-the-app
+  - prefer-bioarc-public-apis-over-local-duplicates
+  - validate-the-selected-app-and-affected-workspace-dependencies
+  - do-not-change-another-app-without-explicit-scope-expansion
+
+packageStandards:
+  - keep-the-public-api-small-and-explicit
+  - export-public-types-and-entrypoints-deliberately
+  - do-not-import-from-apps
+  - avoid-circular-workspace-dependencies
+  - keep-runtime-dependencies-minimal
+  - use-peer-dependencies-for-host-provided-frameworks-when-appropriate
+  - preserve-backward-compatibility-unless-a-breaking-change-is-intended
+  - add-regression-tests-for-public-behavior-changes
+  - run-build-lint-check-types-and-tests-when-available
+  - update-package-readme-and-release-metadata-for-public-api-changes

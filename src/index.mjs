@@ -206,6 +206,10 @@ function defaultMetadataPath(target) {
   );
 }
 
+function standardsText() {
+  return readText(path.join(DEFAULTS_ROOT, "standards.yaml"), 12000);
+}
+
 function targetDoc(state) {
   const { root, target, targets, expanded } = state;
   const manifest = target.manifest;
@@ -234,6 +238,7 @@ function targetDoc(state) {
     "",
     "## Validation",
     ...validationPlan(target).map((command) => `- ${command}`),
+    standardsText() ? `\n## Bioarc development standards\n${standardsText()}` : "",
     defaults ? `\n## Bioarc default metadata\n${defaults}` : "",
     extra ? `\n## Bioarc metadata\n${extra}` : "",
     readme ? `\n## Target README\n${readme}` : "",
@@ -295,9 +300,15 @@ export function createBioarcExtension() {
           `- Readable internal dependency closure: ${closure.join(", ") || "none"}`,
           `- Explicitly expanded writable folders: ${[...state.expanded].join(", ") || "none"}`,
           "- Do not modify another app/package without /bioarc expand <target>.",
+          "- Prefer existing code and APIs, then @bioarc packages, then existing workspace dependencies; add third-party dependencies only when necessary.",
+          "- Before adding a dependency, inspect the Bioarc package catalog and current workspace dependencies. Explain why no existing option works.",
+          target.kind === "package"
+            ? "- Package standards: keep the public API small and explicit; do not import apps; keep runtime dependencies minimal; avoid cycles; test public behavior; preserve exports and types."
+            : "- App standards: prefer Bioarc public APIs over local duplicates; keep app-specific behavior in the app; validate the selected app and affected workspace dependencies.",
           "- Use the repository's existing package scripts and filtered Turborepo commands.",
           `- Required validation: ${validationPlan(target).join("; ")}`,
-        ].join("\n"),
+          standardsText() ? `- Full standards file: ${path.join(DEFAULTS_ROOT, "standards.yaml")}` : "",
+        ].filter(Boolean).join("\n"),
       };
     });
 
@@ -347,6 +358,7 @@ export function createBioarcExtension() {
           return notify(ctx, "Bioarc target cleared. File writes are blocked until a target is selected.");
         }
         if (!state.target && ["docs", "impact", "verify", "expand", "status"].includes(command)) return notify(ctx, "Select a target first with /bioarc select <app-or-package>.", "warning");
+        if (command === "standards") return notify(ctx, standardsText());
         if (command === "docs") return notify(ctx, targetDoc(state));
         if (command === "impact") {
           const dependencies = [...dependencyClosure(state.target, state.targets)].join("\n- ");
@@ -361,7 +373,7 @@ export function createBioarcExtension() {
           return notify(ctx, `Bioarc write scope expanded to ${target.name} (${target.folder}).`);
         }
         if (command === "verify") return notify(ctx, `Validation plan for ${state.target.name}:\n- ${validationPlan(state.target).join("\n- ")}`);
-        return notify(ctx, "Bioarc commands: /bioarc targets, select <target>, status, docs, impact, verify, expand <target>, clear");
+        return notify(ctx, "Bioarc commands: /bioarc targets, select <target>, status, docs, impact, standards, verify, expand <target>, clear");
       },
     });
 

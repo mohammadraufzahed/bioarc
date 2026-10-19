@@ -10,4 +10,6 @@ They are intentionally conservative:
 - validation uses existing workspace scripts;
 - `summary` is factual when the package manifest has no description.
 
+`standards.yaml` is the central policy loaded into every agent turn. It covers dependency priority, app development, and package development.
+
 A consuming repository can override a target by adding `bioarc.yaml` beside its `package.json`. The plugin does not write to `apps/` or `packages/` to install or use these defaults.
